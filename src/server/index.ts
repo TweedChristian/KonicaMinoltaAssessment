@@ -1,19 +1,21 @@
-import express, { Express, Request, Response } from 'express';
+import express, { Express, NextFunction, Request, Response } from 'express';
 import dotenv from 'dotenv';
+
+import initializeRouter from "./routes/initialize";
+import errorRouter from "./routes/error";
 
 dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT;
 
-app.get('/', (_req: Request, res: Response) => {
-  res.send('Getting started');
+app.use((req: Request, _res: Response, next: NextFunction) => {
+  console.log(`${req.method}: ${req.url}`);
+  next();
 });
 
-app.get("/initialize", (req: Request, res: Response) => {
-  console.log(req);
-  res.send("Tada");
-});
+app.use("/initialize", initializeRouter);
+app.use("/error", errorRouter);
 
 app.listen(port, () => {
   console.log(`⚡️ Server is running at http://localhost:${port} ⚡️`);

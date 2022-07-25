@@ -3,8 +3,6 @@ import express, { Request, Response } from "express";
 import { GameController } from "../controllers/game.controller";
 import { Payload } from "../interfaces/payload.interface";
 
-const initializeRouter = express.Router();
-
 interface InitializeResponse extends Payload {
   msg: "INITIALIZE",
   body: {
@@ -21,7 +19,9 @@ const createInitializeResponse = (heading: string, message: string): InitializeR
     heading,
     message
   },
-})
+});
+
+const initializeRouter = express.Router();
 
 initializeRouter.use("/", (_req, _res, next) => {
   GameController.initialize();

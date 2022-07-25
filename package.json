@@ -2,7 +2,7 @@
   "name": "konica-minolta-assessment",
   "version": "1.0.0",
   "description": "A technical assessment for KonicaMinolta",
-  "main": "dist/src/server/index.js",
+  "main": "dist/src/server/server.js",
   "scripts": {
     "build": "npx tsc",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/server.js\"",

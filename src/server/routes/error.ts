@@ -2,8 +2,7 @@ import express, { Request, Response } from "express";
 
 const errorRouter = express.Router();
 
-errorRouter.post("/", (req: Request, res: Response) => {
-  console.log(req.body);
+errorRouter.post("/", (_req: Request, res: Response) => {
   res.sendStatus(200);
 });
 

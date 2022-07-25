@@ -1,27 +1,15 @@
 
-export interface Node<T> {
+interface Node<T> {
   data: T;
   next: Node<T> | null;
 }
 
 export class LinkedList<T> {
-  private _head: Node<T> | null = null;
-  public get head(): Node<T> | null {
-    return this._head;
-  }
-  public set head(value: Node<T> | null) {
-    if(value === null){
-      this.head = null;
-      return;
-    }
-
-    value.next = this._head;
-    this.head = value;
-  }
+  public head: Node<T> | null = null;
 
   public get size(): number {
     let size = 0;
-    let currentNode: Node<T> | null = this._head;
+    let currentNode: Node<T> | null = this.head;
 
     while(currentNode !== null){
       currentNode = currentNode.next;
@@ -32,7 +20,7 @@ export class LinkedList<T> {
   }
 
   public end(): Node<T> | null {
-    let currentNode: Node<T> | null = this._head;
+    let currentNode: Node<T> | null = this.head;
 
     if(currentNode === null){
       return null;
@@ -43,5 +31,26 @@ export class LinkedList<T> {
     }
 
     return currentNode;
+  }
+
+  public append(node: Node<T>): void {
+    const finalNode = this.end();
+    if(finalNode === null){
+      this.head = node;
+      return;
+    }
+    
+    finalNode.next = node;
+    return;
+  }
+
+  public prepend(node: Node<T>): void {
+    if(this.head === null){
+      this.head = node;
+      return;
+    }
+
+    node.next = this.head;
+    this.head = node;
   }
 }

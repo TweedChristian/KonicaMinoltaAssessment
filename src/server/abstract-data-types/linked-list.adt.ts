@@ -1,5 +1,5 @@
 
-interface Node<T> {
+export interface Node<T> {
   data: T;
   next: Node<T> | null;
 }
@@ -33,7 +33,12 @@ export class LinkedList<T> {
     return currentNode;
   }
 
-  public append(node: Node<T>): void {
+  public append(data: T): void {
+    const node: Node<T> = {
+      next: null,
+      data,
+    };
+
     const finalNode = this.end();
     if(finalNode === null){
       this.head = node;
@@ -44,7 +49,12 @@ export class LinkedList<T> {
     return;
   }
 
-  public prepend(node: Node<T>): void {
+  public prepend(data: T): void {
+    const node: Node<T> = {
+      next: null,
+      data,
+    }
+
     if(this.head === null){
       this.head = node;
       return;

@@ -8,7 +8,7 @@
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/src/server/server.js\"",
     "start": "node dist/src/server/server.js",
     "http-server": "http-server -p 4200",
-    "start:all": "concurrently \"http-server ./src/client/\" \"node ./dist/src/server/server.js\""
+    "start:all": "concurrently \"http-server -p 4200 ./src/client/\" \"node ./dist/src/server/server.js\""
   },
   "repository": {
     "type": "git",

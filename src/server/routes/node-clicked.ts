@@ -113,7 +113,7 @@ nodeClickedRouter.post("/", (req: Request, res: Response) => {
 
     const responseBody = !GameController.isGameOver ? validEndNodeResponseFactory(newLine) :
       gameOverNodeResponseFactory(newLine);
-      
+
     res.status(200).json(responseBody);
   }
   else {

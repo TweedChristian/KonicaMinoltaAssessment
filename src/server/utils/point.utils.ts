@@ -1,4 +1,3 @@
-import { Line } from "../interfaces/line.interface";
 import { Point } from "../interfaces/point.interface";
 
 /**
@@ -12,32 +11,16 @@ export const arePointsEqual = ({x: xA, y: yA}: Point, {x: xB, y: yB}: Point): bo
   return xA === xB && yA === yB;
 };
 
-/**
- * Checks to see if either of the points in the line
- * are equivalent to the given point
- * 
- * @param line the test line
- * @param point the test point
- * @returns if the point is in the line
- */
-export const doesLineContainPoint = ({start, end}: Line, point: Point): boolean => {
-  return arePointsEqual(start, point) || arePointsEqual(end, point);
-};
+export const canPointsConnect = ({x: aX, y: aY}: Point, {x: bX, y: bY}: Point): boolean => {
+  const xDifference = bX - aX;
+  const yDifference = bY - aY;
+  
+  //Same line
+  if(xDifference === 0 && yDifference === 0){
+    return false;
+  }
 
-export const canPointConnectToLine = (point: Point, {start, end}: Line): boolean => {
-  const canPointsConnect = ({x: aX, y: aY}: Point, {x: bX, y: bY}: Point): boolean => {
-    const xDifference = bX - aX;
-    const yDifference = bY - aY;
-    
-    //Same line
-    if(xDifference === 0 && yDifference === 0){
-      return false;
-    }
-
-    return xDifference <= 1 && yDifference <= 1;
-  };
-
-  return canPointsConnect(point, start) || canPointsConnect(point, end);
+  return xDifference <= 1 && yDifference <= 1;
 };
 
 export const isPointInBounds = ({x, y}: Point, width: number, height: number): boolean => x < width && x >= 0 && y < height && y >= 0;

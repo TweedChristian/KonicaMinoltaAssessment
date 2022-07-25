@@ -88,7 +88,7 @@ export const doesLineIntersectAnyLine = (line: Line, listOfLines: LineList): boo
     foundIntersection = areLinesIdentical(currentNode.data, expectedCrossLine) || areLinesIdentical(currentNode.data, line);
     currentNode = currentNode.next;
   }
-  console.log(foundIntersection);
+  
   return foundIntersection;
 };
 

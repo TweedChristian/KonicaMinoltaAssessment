@@ -2,7 +2,7 @@ import { GameState, GameStateFactory, Players } from "../data/game-state";
 import { Line } from "../interfaces/line.interface";
 import { Point } from "../interfaces/point.interface";
 import { doesLineIntersectAnyLine, getEndPointOfPath, getStartPointOfPath } from "../utils/line.utils";
-import { arePointsEqual, canPointConnectToLine, generatePointNeighbors } from "../utils/point.utils";
+import { arePointsEqual, canPointsConnect, generatePointNeighbors } from "../utils/point.utils";
 
 const createPointKey = (point: Point) => `(x: ${point.x}, y: ${point.y}`;
 
@@ -57,18 +57,7 @@ class GameStateController {
       return false;
     }
 
-    const head = this._state.lines.head;
-    const tail = this._state.lines.tail;
-
-    //If there's no head, there's no lines and no tail
-    if(head === null || tail === null){
-      return true;
-    }
-
-    //Check to see if we can connect to either end of the path
-    const canPointConnectToStart = canPointConnectToLine(endPoint, head.data);
-    const canPointConnectToEnd = canPointConnectToLine(endPoint, tail.data);
-    if(canPointConnectToStart === false && canPointConnectToEnd === false){
+    if(!canPointsConnect(endPoint, this._lastSelectedPoint)){
       return false;
     }
 

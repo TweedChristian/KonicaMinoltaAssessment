@@ -12,8 +12,8 @@ export const arePointsEqual = ({x: xA, y: yA}: Point, {x: xB, y: yB}: Point): bo
 };
 
 export const canPointsConnect = ({x: aX, y: aY}: Point, {x: bX, y: bY}: Point): boolean => {
-  const xDifference = bX - aX;
-  const yDifference = bY - aY;
+  const xDifference = Math.abs(bX - aX);
+  const yDifference = Math.abs(bY - aY);
   
   //Same line
   if(xDifference === 0 && yDifference === 0){

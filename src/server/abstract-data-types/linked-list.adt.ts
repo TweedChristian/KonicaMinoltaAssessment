@@ -5,7 +5,15 @@ export interface Node<T> {
 }
 
 export class LinkedList<T> {
-  public head: Node<T> | null = null;
+  private _head: Node<T> | null = null;
+  public get head(): Node<T> | null {
+    return this._head;
+  }
+  
+  private _tail: Node<T> | null = null;
+  public get tail(): Node<T> | null {
+    return this._tail;
+  }
 
   public get size(): number {
     let size = 0;
@@ -19,34 +27,20 @@ export class LinkedList<T> {
     return size;
   }
 
-  public end(): Node<T> | null {
-    let currentNode: Node<T> | null = this.head;
-
-    if(currentNode === null){
-      return null;
-    }
-
-    while(currentNode.next !== null){
-      currentNode = currentNode.next;
-    }
-
-    return currentNode;
-  }
-
   public append(data: T): void {
     const node: Node<T> = {
       next: null,
       data,
     };
 
-    const finalNode = this.end();
-    if(finalNode === null){
-      this.head = node;
+    if(this.tail === null){
+      this._head = node;
+      this._tail = node;
       return;
     }
     
-    finalNode.next = node;
-    return;
+    this.tail.next = node;
+    this._tail = node; //Update end
   }
 
   public prepend(data: T): void {
@@ -56,11 +50,12 @@ export class LinkedList<T> {
     }
 
     if(this.head === null){
-      this.head = node;
+      this._head = node;
+      this._tail = node;
       return;
     }
 
     node.next = this.head;
-    this.head = node;
+    this._head = node; //Update start
   }
 }

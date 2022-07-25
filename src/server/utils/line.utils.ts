@@ -1,3 +1,4 @@
+import { LineList } from "../data/game-state";
 import { Line } from "../interfaces/line.interface";
 import { Point } from "../interfaces/point.interface";
 import { arePointsEqual } from "./point.utils";
@@ -69,4 +70,40 @@ export const doLinesIntersect = (lineA: Line, lineB: Line): boolean => {
   return areLinesIdentical(expectedCrossLine, lineB);
 };
 
+/**
+ * Checks to see if the given line intersects with any other given line 
+ * in a list of lines
+ * 
+ * @param line 
+ * @param listOfLines 
+ * @returns whether or not any intersection is present
+ */
+export const doesLineIntersectAnyLine = (line: Line, listOfLines: LineList): boolean => {
+  const expectedCrossLine = createExpectedCrossLine(line);
 
+  //Could refactor this to be recursive
+  let currentNode = listOfLines.head;
+  let foundIntersection = false;
+  while(currentNode !== null && !foundIntersection){
+    foundIntersection = areLinesIdentical(currentNode.data, expectedCrossLine) || areLinesIdentical(currentNode.data, line);
+    currentNode = currentNode.next;
+  }
+  console.log(foundIntersection);
+  return foundIntersection;
+};
+
+export const getStartPointOfPath = (listOfLines: LineList): Point | null => {
+  if(listOfLines.head === null){
+    return null;
+  }
+
+  return listOfLines.head.data.start;
+};
+
+export const getEndPointOfPath = (listOfLines: LineList): Point | null => {
+  if(listOfLines.tail === null){
+    return null;
+  }
+
+  return listOfLines.tail.data.end;
+};

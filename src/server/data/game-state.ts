@@ -1,6 +1,5 @@
 import { LinkedList } from "../abstract-data-types/linked-list.adt";
 import { Line } from "../interfaces/line.interface";
-import { Point } from "../interfaces/point.interface";
 
 export type LineList = LinkedList<Line>;
 
@@ -12,7 +11,6 @@ export interface GameState {
   currentPlayer: Players;
   width: number;
   height: number;
-  lastSelectedPoint: Point | null;
 }
 
 export const GameStateFactory = (): GameState => ({
@@ -21,5 +19,4 @@ export const GameStateFactory = (): GameState => ({
   currentPlayer: "Player1",
   width: 4,
   height: 4,
-  lastSelectedPoint: null,
 });

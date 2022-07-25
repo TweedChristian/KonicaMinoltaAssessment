@@ -9,7 +9,7 @@ import nodeClickedRouter from "./routes/node-clicked";
 dotenv.config();
 
 const app: Express = express();
-const port = process.env.PORT;
+const port = process.env.PORT ?? '8080';
 
 app.use(cors());
 app.use(express.json());
@@ -26,3 +26,5 @@ app.use("/node-clicked", nodeClickedRouter);
 app.listen(port, () => {
   console.log(`⚡️ Server is running at http://localhost:${port} ⚡️`);
 });
+    //npx httpserver path for ui file//Would need more control over the client to make legitimate game rooms
+

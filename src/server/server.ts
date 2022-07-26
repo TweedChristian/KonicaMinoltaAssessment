@@ -26,5 +26,5 @@ app.use("/node-clicked", nodeClickedRouter);
 app.listen(port, () => {
   console.log(`⚡️ Server is running at http://localhost:${port} ⚡️`);
 });
-    //npx httpserver path for ui file//Would need more control over the client to make legitimate game rooms
-
+  //npx httpserver path for ui file
+  //Plus documentation

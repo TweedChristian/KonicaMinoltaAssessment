@@ -2,11 +2,13 @@ import { GameState, GameStateFactory, Players } from "../data/game-state";
 import { Line } from "../interfaces/line.interface";
 import { Point } from "../interfaces/point.interface";
 import { doesLineIntersectAnyLine, getEndPointOfPath, getStartPointOfPath } from "../utils/line.utils";
-import { arePointsEqual, canPointsConnect, generatePointNeighbors } from "../utils/point.utils";
+import { arePointsEqual, canPointsConnect, generatePointNeighbors, isPointInBounds } from "../utils/point.utils";
 
 const createPointKey = (point: Point) => `(x: ${point.x}, y: ${point.y}`;
 
-//TODO: Make this non-blocking by making it promise based
+//TODO: Make this non-blocking by making it promise based?
+
+
 class GameStateController {
   private _state: GameState;
   private _lastSelectedPoint: Point | null = null;
@@ -17,31 +19,59 @@ class GameStateController {
     this._resetAvailablityMap();
   }
 
+  /**
+   * Return the current player
+   */
   public get currentPlayer(): Players {
     return this._state.currentPlayer;
   }
 
+  /**
+   * Check to see if we are selecting the first node
+   */
   public get isStartingNode(): boolean {
     return this._lastSelectedPoint === null;
   }
 
+  /**
+   * Check to see if the game is over
+   */
   public get isGameOver(): boolean {
     return this._state.isOver;
   }
 
+  /**
+   * Reset the game state, available points, and the lastSelectedPoint
+   */
   public initialize(): void {
     this._state = GameStateFactory();
     this._lastSelectedPoint = null;
     this._resetAvailablityMap();
   }
 
+  /**
+   * Clear the start node
+   */
   public clearStartNode(): void {
     this._lastSelectedPoint = null;
   }
 
+  /**
+   * Checks to see if the given point can be connected to
+   * either the start of the head of the list, or the
+   * end of the tail of the list, or if the point
+   * is out of bounds
+   * 
+   * @param point 
+   * @returns is the node is valid
+   */
   public isStartNodeValid(point: Point): boolean {
     const pathStart = getStartPointOfPath(this._state.lines);
     const pathEnd = getEndPointOfPath(this._state.lines);
+
+    if(!isPointInBounds(point, this._state.width, this._state.height)){
+      return false;
+    }
 
     if(pathStart === null || pathEnd === null){
       return true;
@@ -50,10 +80,22 @@ class GameStateController {
     return arePointsEqual(point, pathStart) || arePointsEqual(point, pathEnd);
   }
 
+  /**
+   * Checks to see if the end node can be connected to
+   * the lastSelectedPoint, and will not cause any intersections,
+   * loops, or will be out of bounds
+   * 
+   * @param endPoint 
+   * @returns if the end node is valid
+   */
   public isEndNodeValid(endPoint: Point): boolean {
     //There should always be a lastSelectedPoint when this is called
     //But this is a safety catch.
     if(this._lastSelectedPoint === null){
+      return false;
+    }
+
+    if(!isPointInBounds(endPoint, this._state.width, this._state.height)){
       return false;
     }
 
@@ -75,10 +117,23 @@ class GameStateController {
      return doesLineIntersectAnyLine(newLine, this._state.lines) === false;
   }
 
+  /**
+   * Save the start node to the _lastSelectedPoint
+   * 
+   * @param point 
+   */
   public saveStartNode(point: Point): void {
     this._lastSelectedPoint = point;
   }
 
+  /**
+   * Saves the endPoint to the list of lines. Checks to
+   * see if the addition is to the head of the path, or the 
+   * tail of the path
+   * 
+   * @param endPoint 
+   * @returns the new line or null
+   */
   public saveEndNode(endPoint: Point): Line | null {
     if(this._lastSelectedPoint === null){
       return null;
@@ -118,6 +173,12 @@ class GameStateController {
     return line;
   }
 
+  /**
+   * Check to see if there are any available moves left.
+   * It checks the neighbors of the start and end of the path,
+   * and if no valid lines can be made it marks the game as over
+   * 
+   */
   public updateGameOverStatus(): void {
     //Don't need to check availability of neighbors if there are none
     const head = this._state.lines.head;
@@ -148,10 +209,16 @@ class GameStateController {
     this._state.isOver = !foundAvailablePoint;
   }
 
+  /**
+   * Change Players
+   */
   public switchPlayers(): void {
     this._state.currentPlayer = this._state.currentPlayer === "Player1" ? "Player2" : "Player1";
   }
 
+  /**
+   * Mark all points as available
+   */
   private _resetAvailablityMap(): void {
     for(let x = 0; x < this._state.width; x++){
       for(let y = 0; y < this._state.height; y++){
@@ -161,4 +228,8 @@ class GameStateController {
   }
 }
 
+/**
+ * Controls the logic of the game and interfaces with the game's state. It is
+ * a singleton.
+ */
 export const GameController = new GameStateController();

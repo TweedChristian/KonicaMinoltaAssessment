@@ -92,6 +92,12 @@ export const doesLineIntersectAnyLine = (line: Line, listOfLines: LineList): boo
   return foundIntersection;
 };
 
+/**
+ * Get the start point of the path that is able to be connected to
+ * 
+ * @param listOfLines 
+ * @returns the start point if it exists
+ */
 export const getStartPointOfPath = (listOfLines: LineList): Point | null => {
   if(listOfLines.head === null){
     return null;
@@ -100,6 +106,12 @@ export const getStartPointOfPath = (listOfLines: LineList): Point | null => {
   return listOfLines.head.data.start;
 };
 
+/**
+ * Get the end point of the path that is able to be connected to
+ * 
+ * @param listOfLines 
+ * @returns the end point if it exists
+ */
 export const getEndPointOfPath = (listOfLines: LineList): Point | null => {
   if(listOfLines.tail === null){
     return null;

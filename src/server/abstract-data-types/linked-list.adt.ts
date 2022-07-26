@@ -15,18 +15,6 @@ export class LinkedList<T> {
     return this._tail;
   }
 
-  public get size(): number {
-    let size = 0;
-    let currentNode: Node<T> | null = this.head;
-
-    while(currentNode !== null){
-      currentNode = currentNode.next;
-      size++;
-    }
-
-    return size;
-  }
-
   public append(data: T): void {
     const node: Node<T> = {
       next: null,
